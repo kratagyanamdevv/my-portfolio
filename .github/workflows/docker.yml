@@ -15,7 +15,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t <your-dockerhub-username>/portfolio:latest .
+        run: docker build -t kratagya121/portfolio:latest .
 
       - name: Push Docker image
-        run: docker push <your-dockerhub-username>/portfolio:latest
+        run: docker push kratagya121/portfolio:latest
