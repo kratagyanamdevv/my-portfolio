@@ -75,6 +75,15 @@ export default function Portfolio() {
         </section>
 
         <section className="bg-gradient-to-r from-indigo-700 to-indigo-800 text-white shadow-xl rounded-2xl p-6 transition-all duration-300 hover:bg-indigo-600">
+          <h2 className="text-2xl font-bold">Projects</h2>
+          <ul className="list-disc list-inside mt-4">
+            <li><strong>Flask Exchange Platform:</strong> Built a crypto trading simulator using Flask, React, AWS CodePipeline, and ECS.</li>
+            <li><strong>Django Movie Recommender:</strong> Developed an ML-based recommender using Django, EKS, and SageMaker.</li>
+            <li><strong>BNP ETL Pipeline:</strong> ETL pipeline for financial data using AWS Glue and Redshift.</li>
+          </ul>
+        </section>
+
+        <section className="bg-gradient-to-r from-indigo-700 to-indigo-800 text-white shadow-xl rounded-2xl p-6 transition-all duration-300 hover:bg-indigo-600">
           <h2 className="text-2xl font-bold">Certifications</h2>
           <ul className="list-disc list-inside">
             <li>Azure Fundamentals (AZ-900)</li>
