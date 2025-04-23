@@ -38,9 +38,9 @@ jobs:
         context: .
         push: true
         tags: |
-          kratagyanamdevv/portfolio:latest
-          kratagyanamdevv/portfolio:${{ env.SHORT_SHA }}
-        cache-from: type=registry,ref=kratagyanamdevv/portfolio:latest
+          kratagya121/portfolio:latest
+          kratagya121/portfolio:${{ env.SHORT_SHA }}
+        cache-from: type=registry,ref=kratagya121/portfolio:latest
         cache-to: type=inline
 
     - name: Configure Git
@@ -50,7 +50,7 @@ jobs:
 
     - name: Update deployment file
       run: |
-        sed -i "s|kratagyanamdevv/portfolio:.*|kratagyanamdevv/portfolio:${{ env.SHORT_SHA }}|g" k8s/deployment.yaml
+        sed -i "s|kratagya121/portfolio:.*|kratagya121/portfolio:${{ env.SHORT_SHA }}|g" k8s/deployment.yaml
 
     - name: Commit and push changes
       run: |
