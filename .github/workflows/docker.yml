@@ -64,3 +64,42 @@ jobs:
         git commit -m "Update image tag to ${{ env.SHORT_SHA }}"
         git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
         git push origin main
+
+  deploy-to-kubernetes:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Install ArgoCD CLI
+      run: |
+        curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+        rm argocd-linux-amd64
+
+    - name: Login to ArgoCD
+      run: |
+        argocd login localhost:8080 --username admin --password ${{ secrets.ARGOCD_PASSWORD }} --insecure
+
+    - name: Sync ArgoCD Application
+      run: |
+        # Check if application exists
+        if argocd app get portfolio &>/dev/null; then
+          echo "Application exists, syncing..."
+          argocd app sync portfolio --force
+        else
+          echo "Creating new application..."
+          argocd app create portfolio \
+            --repo https://github.com/kratagyanamdevv/my-portfolio.git \
+            --path k8s \
+            --dest-server https://kubernetes.default.svc \
+            --dest-namespace default \
+            --sync-policy automated
+        fi
+        
+        # Wait for sync to complete
+        argocd app wait portfolio --timeout 30
