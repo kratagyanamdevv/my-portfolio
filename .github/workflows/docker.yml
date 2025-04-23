@@ -31,3 +31,6 @@ jobs:
           git add k8s/deployment.yaml
           git commit -m "Update image tag to ${SHORT_SHA}" || echo "No changes to commit"
           git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/kratagyanamdevv/my-portfolio.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
