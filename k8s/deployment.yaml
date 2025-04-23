@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: portfolio
-          image: kratagya121/portfolio:7d7a16f
+          image: kratagya121/portfolio:a890e08
           ports:
             - containerPort: 80
