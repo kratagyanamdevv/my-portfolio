@@ -15,6 +15,6 @@ spec:
       containers:
         - name: portfolio
           # This will be dynamically updated with the latest image tag (e.g., SHA or version)
-          image: kratagya121/portfolio:${SHORT_SHA}
+          image: kratagya121/portfolio:91dc4a6
           ports:
             - containerPort: 80
