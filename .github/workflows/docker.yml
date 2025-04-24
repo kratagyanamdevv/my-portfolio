@@ -1,23 +1,64 @@
-name: Build and Push Docker Image
+name: Build and Deploy Portfolio
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-      - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        run: docker build -t kratagya121/portfolio:latest .
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker image
-        run: docker push kratagya121/portfolio:latest
+    - name: Generate short SHA
+      id: sha
+      run: echo "SHORT_SHA=$(echo $GITHUB_SHA | head -c 7)" >> $GITHUB_ENV
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        tags: |
+          kratagya121/portfolio:latest
+          kratagya121/portfolio:${{ env.SHORT_SHA }}
+        cache-from: type=registry,ref=kratagya121/portfolio:latest
+        cache-to: type=inline
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "github-actions@github.com"
+    - name: Update deployment file
+      run: |
+        sed -i "s|kratagya121/portfolio:.*|kratagya121/portfolio:${{ env.SHORT_SHA }}|g" k8s/deployment.yaml
+    - name: Commit and push changes
+      run: |
+        git fetch origin main
+        if git rev-list HEAD..origin/main --quiet; then
+          cp k8s/deployment.yaml /tmp/deployment.yaml
+          git reset --hard origin/main
+          cp /tmp/deployment.yaml k8s/deployment.yaml
+        fi
+        git add k8s/deployment.yaml
+        git commit -m "Update image tag to ${{ env.SHORT_SHA }}"
+        git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
+        git push origin main
