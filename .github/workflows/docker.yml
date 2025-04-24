@@ -47,9 +47,11 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "github-actions@github.com"
+
     - name: Update deployment file
       run: |
         sed -i "s|kratagya121/portfolio:.*|kratagya121/portfolio:${{ env.SHORT_SHA }}|g" k8s/deployment.yaml
+
     - name: Commit and push changes
       run: |
         git fetch origin main
