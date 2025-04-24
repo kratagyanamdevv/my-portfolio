@@ -3,7 +3,7 @@ import { Mail, Linkedin, Github } from 'lucide-react';
 
 export default function Portfolio() {
   return (
-    <main className="min-h-screen bg-gradient-to-r from-teal-500 via-purple-600 to-pink-600 text-white px-4 py-10 font-sans">
+    <main className="min-h-screen bg-gradient-to-r from-blue-700 via-emerald-600 to-green-500 text-white px-4 py-10 font-sans">
       <div className="max-w-5xl mx-auto space-y-10">
         <header className="text-center">
           <h1 className="text-5xl font-extrabold text-white hover:text-indigo-300 transition-colors duration-300">Kratagya Namdev</h1>
