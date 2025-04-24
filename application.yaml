@@ -1,0 +1,109 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Application","metadata":{"annotations":{},"name":"portfolio","namespace":"argocd"},"spec":{"destination":{"namespace":"default","server":"https://kubernetes.default.svc"},"project":"default","source":{"path":"k8s","repoURL":"https://github.com/kratagyanamdevv/my-portfolio.git","targetRevision":"HEAD"},"syncPolicy":{"automated":{}}}}
+  creationTimestamp: "2025-04-23T09:32:52Z"
+  generation: 60
+  name: portfolio
+  namespace: argocd
+  resourceVersion: "11357"
+  uid: 9fa44a64-ead1-4168-a3c1-4982100f6f09
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: k8s
+    repoURL: https://github.com/kratagyanamdevv/my-portfolio.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2025-04-23T09:32:54Z"
+    status: Progressing
+  history:
+  - deployStartedAt: "2025-04-23T09:32:53Z"
+    deployedAt: "2025-04-23T09:32:54Z"
+    id: 0
+    initiatedBy:
+      automated: true
+    revision: dfc4b171fd2bcb2047d4cf0330590a90ff376715
+    source:
+      path: k8s
+      repoURL: https://github.com/kratagyanamdevv/my-portfolio.git
+      targetRevision: HEAD
+  operationState:
+    finishedAt: "2025-04-23T09:32:54Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        automated: true
+      retry:
+        limit: 5
+      sync:
+        revision: dfc4b171fd2bcb2047d4cf0330590a90ff376715
+    phase: Succeeded
+    startedAt: "2025-04-23T09:32:53Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/portfolio-service created
+        name: portfolio-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        kind: Deployment
+        message: deployment.apps/portfolio created
+        name: portfolio
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: dfc4b171fd2bcb2047d4cf0330590a90ff376715
+      source:
+        path: k8s
+        repoURL: https://github.com/kratagyanamdevv/my-portfolio.git
+        targetRevision: HEAD
+  reconciledAt: "2025-04-23T12:21:13Z"
+  resources:
+  - health:
+      status: Progressing
+    kind: Service
+    name: portfolio-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      status: Healthy
+    kind: Deployment
+    name: portfolio
+    namespace: default
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Directory
+  summary:
+    images:
+    - kratagya121/portfolio:latest
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        path: k8s
+        repoURL: https://github.com/kratagyanamdevv/my-portfolio.git
+        targetRevision: HEAD
+    revision: 942eefa811c43bf70be4478ca27bc826ab6bd688
+    status: Synced
